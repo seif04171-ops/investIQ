@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  background: #07080b;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  position: relative;
+  isolation: isolate;
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ambient canvas: two soft light sources + film grain. Fixed, so it never
+   scrolls and never costs layout. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(1100px 620px at 8% -8%, rgba(245, 185, 74, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 105% 12%, rgba(139, 155, 255, 0.07), transparent 60%),
+    radial-gradient(800px 500px at 50% 120%, rgba(61, 220, 151, 0.04), transparent 60%),
+    #07080b;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+::selection {
+  background: rgba(245, 185, 74, 0.32);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(245, 185, 74, 0.7);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Thin, quiet scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+@layer components {
+  /* The signature surface: a faint top-lit glass panel with a hairline edge. */
+  .glass {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.022));
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 12px 32px -16px rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  .glass-hover {
+    transition:
+      transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      background 0.25s ease;
+  }
+  .glass-hover:hover {
+    transform: translateY(-2px);
+    border-color: rgba(245, 185, 74, 0.38);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.07),
+      0 18px 44px -18px rgba(245, 185, 74, 0.28);
+  }
+  .hairline {
+    border-color: rgba(255, 255, 255, 0.07);
+  }
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.14em] text-dim;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+  .text-gold-gradient {
+    background: linear-gradient(120deg, #ffe2a6 0%, #f5b94a 45%, #c98a1b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .grid-lines {
+    position: relative;
+  }
+  .grid-lines::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at 50% 0%, #000 20%, transparent 72%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 20%, transparent 72%);
+  }
+  /* Rich-text in AI answers */
+  .prose-iq p {
+    @apply mb-2.5 last:mb-0 leading-relaxed;
+  }
+  .prose-iq ul {
+    @apply my-2 flex flex-col gap-1 pl-4 list-disc marker:text-primary/70;
+  }
+  .prose-iq strong {
+    @apply font-semibold text-ink;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

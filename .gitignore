@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# Env
+.env
+.env.local
+
+# Node
+node_modules/
+.next/
+out/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+.env
+.env.local
+venv/
+.venv/
+node_modules/
+.next/
+__pycache__/
+*.pyc
+.pytest_cache/
+backend/.cache/
+.DS_Store
+*.tgz
